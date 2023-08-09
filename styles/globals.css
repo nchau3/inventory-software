@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+
+}
+
+@media (prefers-color-scheme: dark) {
+
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+}
+
+.page-container {
+  @apply ml-60 flex items-center justify-center min-h-screen;
+}
