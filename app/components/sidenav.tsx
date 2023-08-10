@@ -3,7 +3,7 @@ import SideNavItem from "./sidenav-item"
 
 export default function SideNav() {
     return (
-        <div className="flex flex-col items-center fixed top-0 left-0 h-screen w-60 border-r-2 pt-3">
+        <div className="flex flex-col items-center fixed h-screen w-60 border-r-2 pt-3 mt-10">
             <SideNavHeader></SideNavHeader>
             <ul className="flex flex-col w-full pl-4">
                 <SideNavItem name="items" />
