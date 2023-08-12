@@ -6,7 +6,7 @@ interface sideNavProps {
 
 export default function SideNavItem(props: sideNavProps) {
     return (
-        <li className="w-full text-[30px] pt-1">
+        <li className="w-full text-[30px] pt-1 hover:opacity-60">
             <Link href={props.name}>
                 {props.name.toUpperCase()}
             </Link>

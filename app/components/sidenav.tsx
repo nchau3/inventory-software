@@ -8,6 +8,7 @@ export default function SideNav() {
             <ul className="flex flex-col w-full pl-4">
                 <SideNavItem name="items" />
                 <SideNavItem name="locations" />
+                <SideNavItem name="lists" />
                 <SideNavItem name="reports" />
                 <SideNavItem name="settings" />
             </ul>
