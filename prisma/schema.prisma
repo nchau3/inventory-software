@@ -10,14 +10,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Items {
-  id          Int       @id @default(autoincrement())
-  createdAt   DateTime  @default(now())
-  name        String    @db.VarChar(255)
+model Item {
+  id              Int         @id @default(autoincrement())
+  name            String      @db.VarChar(255)
+  sku             String      @db.VarChar(20) @unique
+  is_active       Boolean     @default(true)
+  date_created    DateTime    @default(now())
+  last_modified   DateTime    @updatedAt
+  locations       Location[]  
 }
 
-model Locations {
-  id          Int       @id @default(autoincrement())
-  createdAt   DateTime  @default(now())
-  name        String    @db.VarChar(255)
+model Location {
+  id              Int       @id @default(autoincrement())
+  name            String    @db.VarChar(255)
+  createdAt       DateTime  @default(now())
+  last_modified   DateTime    @updatedAt
+  items           Item[]
 }

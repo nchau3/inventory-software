@@ -5,8 +5,8 @@ import { seedLocations } from "./locations";
 const prisma = new PrismaClient();
 
 async function main() {
-    await prisma.items.deleteMany({});
-    await prisma.locations.deleteMany({});
+    await prisma.item.deleteMany({});
+    await prisma.location.deleteMany({});
 
     await seedItems(prisma);
     await seedLocations(prisma);
