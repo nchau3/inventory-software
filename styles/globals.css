@@ -2,19 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-
-}
-
-@media (prefers-color-scheme: dark) {
-
-}
-
 body {
-  width: 100vw;
+  width: 100%;
   height: 100vh;
 }
 
 .page-container {
-  @apply ml-60 flex items-center justify-center min-h-screen;
+  @apply ml-60 mt-10 flex min-h-screen items-center justify-center pt-10;
 }

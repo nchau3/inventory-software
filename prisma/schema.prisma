@@ -23,7 +23,7 @@ model Item {
 model Location {
   id              Int       @id @default(autoincrement())
   name            String    @db.VarChar(255)
-  createdAt       DateTime  @default(now())
+  date_created    DateTime  @default(now())
   last_modified   DateTime    @updatedAt
   items           Item[]
 }

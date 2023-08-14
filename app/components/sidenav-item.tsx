@@ -1,15 +1,13 @@
 import Link from "next/link";
 
 interface sideNavProps {
-    name: string;
+  name: string;
 }
 
 export default function SideNavItem(props: sideNavProps) {
-    return (
-        <li className="w-full text-[30px] pt-1 hover:opacity-60">
-            <Link href={props.name}>
-                {props.name.toUpperCase()}
-            </Link>
-        </li>
-    )
+  return (
+    <li className="w-full pt-1 text-[30px] hover:opacity-60">
+      <Link href={`/${props.name}`}>{props.name.toUpperCase()}</Link>
+    </li>
+  );
 }

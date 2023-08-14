@@ -5,7 +5,6 @@ import { Roboto } from "next/font/google";
 import "../styles/globals.css";
 import SideNav from "./components/sidenav";
 import PageHeader from "./components/page-header";
-import BaseLayout from "./layouts/base-layout";
 
 const roboto = Roboto({ subsets: ["latin"], weight: "400" });
 
@@ -22,9 +21,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={roboto.className}>
-        <BaseLayout topNavSlot={<PageHeader />} sideNavSlot={<SideNav />}>
-          {children}
-        </BaseLayout>
+        <PageHeader></PageHeader>
+        <SideNav></SideNav>
+        {children}
       </body>
     </html>
   );
