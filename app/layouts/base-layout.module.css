@@ -1,0 +1,44 @@
+.layoutContainer {
+  --top-bar-height: 40px;
+  --sidebar-width: 300px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.topBar {
+  height: var(--top-bar-height);
+  position: sticky;
+  top: 0;
+  @apply bg-gray-400;
+}
+
+.sidebarMain {
+  display: flex;
+  transition: all 0.4s;
+  width: 100%;
+}
+
+.sidebarCollapsed {
+  width: calc(100% + var(--sidebar-width));
+  margin-left: calc(-1 * var(--sidebar-width));
+}
+
+.sidebar {
+  flex-shrink: 0;
+  position: sticky;
+  top: var(--top-bar-height);
+  height: calc(100vh - var(--top-bar-height));
+  @apply w-[var(--sidebar-width)] border-r-2;
+}
+
+.expandButton {
+  @apply absolute left-[calc(100%+8px)] top-2 flex h-14 w-14 items-center justify-center rounded-full text-5xl;
+}
+
+.main {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  @apply px-2 py-4;
+}
