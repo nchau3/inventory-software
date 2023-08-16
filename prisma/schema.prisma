@@ -27,3 +27,11 @@ model Location {
   last_modified   DateTime    @updatedAt
   items           Item[]
 }
+
+model Item_Location {
+  item            Item        @relation(fields: [itemId], references: [id])
+  itemId          Int
+  location        Location    @relation(fields: [locationId], references: [id])
+  locationId      Int
+  quantity        Int         
+}
