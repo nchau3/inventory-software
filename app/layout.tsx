@@ -3,8 +3,8 @@ import { Roboto } from "next/font/google";
 
 //styles
 import "../styles/globals.css";
-import SideNav from "./components/sidenav";
-import PageHeader from "./components/page-header";
+import SideNav from "./layouts/components/sidenav";
+import PageHeader from "./layouts/components/page-header";
 import BaseLayout from "./layouts/base-layout";
 
 const roboto = Roboto({ subsets: ["latin"], weight: "400" });
