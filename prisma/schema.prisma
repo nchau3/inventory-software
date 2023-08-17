@@ -17,7 +17,7 @@ model Item {
   is_active       Boolean     @default(true)
   date_created    DateTime    @default(now())
   last_modified   DateTime    @updatedAt
-  locations       Location[]  
+  locations       Item_Location[]
 }
 
 model Location {
@@ -25,7 +25,7 @@ model Location {
   name            String    @db.VarChar(255)
   date_created    DateTime  @default(now())
   last_modified   DateTime    @updatedAt
-  items           Item[]
+  items           Item_Location[]
 }
 
 model Item_Location {
@@ -33,5 +33,7 @@ model Item_Location {
   itemId          Int
   location        Location    @relation(fields: [locationId], references: [id])
   locationId      Int
-  quantity        Int         
+  quantity        Int
+
+  @@id([itemId, locationId])         
 }
