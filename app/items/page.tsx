@@ -1,10 +1,9 @@
-import { PrismaClient } from "@prisma/client";
+import { Item } from "@prisma/client";
 import ItemList from "./components/item-list";
-
-const prisma = new PrismaClient();
+import { prisma } from "../../prisma/client";
 
 const getItems = async () => {
-  const itemsData = await prisma.item.findMany();
+  const itemsData = prisma.item.findMany();
 
   return itemsData;
 };
