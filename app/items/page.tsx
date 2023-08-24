@@ -3,7 +3,7 @@ import ItemList from "./components/item-list";
 import { prisma } from "../../prisma/client";
 
 const getItems = async () => {
-  const itemsData = prisma.item.findMany();
+  const itemsData = await prisma.item.findMany();
 
   return itemsData;
 };

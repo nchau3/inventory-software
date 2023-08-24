@@ -1,7 +1,7 @@
 .layoutContainer {
   --top-bar-height: 40px;
   --sidebar-width: 300px;
-  @apply min-h-screen flex flex-col;
+  @apply min-h-screen flex flex-col bg-gradient-to-tr from-slate-300;
 }
 
 .topBar {
@@ -21,7 +21,7 @@
 .sidebar {
   top: var(--top-bar-height);
   height: calc(100vh - var(--top-bar-height));
-  @apply w-[var(--sidebar-width)] bg-slate-50 shrink-0 sticky border-r-2;
+  @apply w-[var(--sidebar-width)] bg-slate-200 bg-opacity-20 shrink-0 sticky border-r-2;
 }
 
 .expandButton {
@@ -29,5 +29,5 @@
 }
 
 .main {
-  @apply flex grow justify-center bg-gradient-to-tr from-slate-300 px-2 py-4;
+  @apply flex grow justify-center px-2 py-4;
 }

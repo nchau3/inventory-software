@@ -6,7 +6,3 @@ body {
   width: 100%;
   height: 100vh;
 }
-
-.page-container {
-  @apply ml-60 mt-10 flex min-h-screen items-center justify-center pt-10;
-}
