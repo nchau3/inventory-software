@@ -3,11 +3,12 @@ import { seedItems } from "./items";
 import { seedLocations } from "./locations";
 
 async function main() {
+  await prisma.itemLocation.deleteMany({});
   await prisma.item.deleteMany({});
   await prisma.location.deleteMany({});
 
-  await seedItems(prisma);
   await seedLocations(prisma);
+  await seedItems(prisma);
 }
 
 main()

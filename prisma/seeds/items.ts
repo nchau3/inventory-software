@@ -13,4 +13,18 @@ export async function seedItems(prisma: PrismaClient) {
   await prisma.item.createMany({
     data,
   });
+
+  //assign items to random locations
+  for (let i = 1; i <= 75; i++) {
+    const randomLocation = Math.floor(Math.random() * 100);
+    const randomQuantity = Math.floor(Math.random() * 150);  
+
+    await prisma.itemLocation.create({
+      data: {
+          itemId: i,
+          locationId: randomLocation,
+          quantity: randomQuantity
+        },
+    })
+  }
 }
