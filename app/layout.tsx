@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Roboto_Condensed } from "next/font/google";
+import { Roboto } from "next/font/google";
 
 //styles
 import "../styles/globals.css";
@@ -7,7 +7,7 @@ import SideNav from "./layouts/components/sidenav";
 import BaseLayout from "./layouts/base-layout";
 import TopNav from "./layouts/components/top-nav";
 
-const roboto = Roboto_Condensed({ subsets: ["latin"], weight: "400" });
+const roboto = Roboto({ subsets: ["latin"], weight: "400" });
 
 export const metadata: Metadata = {
   title: "Inventory Software!",
