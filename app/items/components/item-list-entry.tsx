@@ -2,14 +2,15 @@ import { itemWithTotalQuantity } from "../page";
 
 export default function ItemListEntry(item: itemWithTotalQuantity) {
   return (
-    <li className="even:bg-slate-300 odd:bg-slate-200 mb-1 px-2">
-      <span className="flex justify-between items-center">
+    <tr className="even:bg-slate-300 odd:bg-slate-200">
+      <td className="text-center">
         <input name={item.sku} type="checkbox" value="selected"></input>
-        <div className="text-xl">{item.name}</div>
-        <div>{item.sku}</div>
-        <div>{item.totalQuantity}</div>
-        <div>{item.is_active ? "ACTIVE" : "DISABLED"}</div>
-      </span>
-    </li>
+      </td>
+      <td>{item.name}</td>
+      <td>{item.sku}</td>
+      <td>{item.totalQuantity}</td>
+      <td>{item.is_active ? "ACTIVE" : "INACTIVE"}</td>
+      <td>YESTERDAY</td>
+    </tr>
   );
 }
