@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { faker } from "@faker-js/faker";
+import { randomNumber } from "../util/random";
 
 const data = Array.from({ length: 100 }).map(() => {
   const fakeName = faker.word.noun({ length: { min: 4, max: 12 } });
@@ -15,13 +16,25 @@ export async function seedItems(prisma: PrismaClient) {
   });
 
   //assign items to random locations
-  for (let i = 1; i <= 75; i++) {
-    const randomLocation = Math.floor(Math.random() * 100);
-    const randomQuantity = Math.floor(Math.random() * 150);  
+  for (let i = 1; i < 200; i++) {
+    const randomItem = randomNumber(100);
+    const randomLocation = randomNumber(150);
+    const randomQuantity = randomNumber(100);
 
-    await prisma.itemLocation.create({
-      data: {
-          itemId: i,
+    await prisma.itemLocation.upsert({
+      where: {
+        itemId_locationId: {
+          itemId: randomItem,
+          locationId: randomLocation
+        }
+      },
+      update: {
+        quantity: {
+          increment: randomQuantity
+        }
+      },
+      create: {
+          itemId: randomItem,
           locationId: randomLocation,
           quantity: randomQuantity
         },
