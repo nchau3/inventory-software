@@ -4,7 +4,7 @@ import { randomNumber } from "../util/random";
 
 const data = Array.from({ length: 100 }).map(() => {
   const fakeName = faker.word.noun({ length: { min: 4, max: 12 } });
-  const fakeSku = `${fakeName.slice(0, 4)}-${(Math.random() * 100)
+  const fakeSku = `${fakeName.slice(0, 4).toUpperCase()}-${(Math.random() * 100)
     .toString()
     .slice(-4, -1)}`;
   return { name: fakeName, sku: fakeSku };
