@@ -8,6 +8,7 @@ const getLocations = async () => {
     select: {
       id: true,
       name: true,
+      is_active: true,
       date_created: true,
       last_modified: true,
       items: {
