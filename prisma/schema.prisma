@@ -23,6 +23,7 @@ model Item {
 model Location {
   id              Int       @id @default(autoincrement())
   name            String    @db.VarChar(255)
+  is_active       Boolean   @default(true)
   date_created    DateTime  @default(now())
   last_modified   DateTime    @updatedAt
   items           ItemLocation[]
