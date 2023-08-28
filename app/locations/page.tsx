@@ -1,7 +1,34 @@
-export default function Locations() {
-  return (
-    <>
-      <h1 className="text-[60px]">LOCATIONS</h1>
-    </>
-  );
+import { prisma } from "../../prisma/client";
+import Table from "../components/tables/table";
+
+const columns = ["name", "status", "last_modified"];
+
+const getLocations = async () => {
+  const locationsData = await prisma.location.findMany({
+    select: {
+      id: true,
+      name: true,
+      date_created: true,
+      last_modified: true,
+      items: {
+        select: {
+          item: true
+        }
+      }
+    }
+  });
+
+
+  return locationsData.map(location => {
+    return {
+      ...location,
+      columns
+    }
+  });
+};
+
+export default async function Locations() {
+  const locations = await getLocations();
+
+  return <Table data={{body: locations, columns: columns}} />;
 }

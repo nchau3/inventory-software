@@ -1,4 +1,4 @@
-import ActiveBadge from "@/app/items/components/active-badge";
+import ActiveBadge from "@/app/components/tables/active-badge";
 
 export interface tableRowProps {
     id: number,

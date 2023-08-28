@@ -1,10 +1,12 @@
-import ItemList from "./components/item-list";
 import { prisma } from "../../prisma/client";
 import { Item } from "@prisma/client";
+import Table from "../components/tables/table";
 
 export interface itemWithTotalQuantity extends Item {
-  totalQuantity: number;
+  qoh: number;
 }
+
+const columns = ["name", "sku", "qoh", "status", "last_modified"];
 
 const getItems = async () => {
   const itemsData = await prisma.item.findMany({
@@ -23,11 +25,13 @@ const getItems = async () => {
     }
   });
 
+
   return itemsData.map(item => {
-    const totalQuantity = item.locations.reduce((prev, curr) => prev + curr.quantity, 0);
+    const qoh = item.locations.reduce((prev, curr) => prev + curr.quantity, 0);
     return {
       ...item,
-      totalQuantity
+      qoh,
+      columns
     }
   });
 };
@@ -35,5 +39,5 @@ const getItems = async () => {
 export default async function Items() {
   const items = await getItems();
 
-  return <ItemList items={items} />;
+  return <Table data={{body: items, columns: columns}} />;
 }
