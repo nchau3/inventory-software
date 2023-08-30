@@ -1,4 +1,5 @@
 import ActiveBadge from "@/app/components/tables/active-badge";
+import { format } from 'date-fns';
 
 export interface tableRowProps {
     id: number,
@@ -17,7 +18,7 @@ export default function TableRow({ data }: { data: tableRowProps }) {
         if (column === "status") {
             return <td><ActiveBadge is_active={data.is_active} /></td>;
         } else if (value instanceof Date) {
-            return <td>{value.toLocaleDateString()}</td>
+            return <td>{format(value, 'MM-dd-yyyy')}</td>
         } else {
             // @ts-ignore
             return <td>{value}</td>;
