@@ -1,5 +1,7 @@
+import { ReactNode } from "react";
+
 interface Props {
-    value: string;
+    value: string | ReactNode;
     twClasses?: string;
 }
 
