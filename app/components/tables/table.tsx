@@ -15,26 +15,26 @@ export default function Table({ data }: { data: tableProps }) {
         if (index === 0) {
             return (
                 <>
-                    <TableHeader name="" twClasses="w-1/12" />
-                    <TableHeader name={name} twClasses="w-1/4" />
+                    <TableHeader key={name + index} name="" twClasses="w-1/12" />
+                    <TableHeader key={name + (index + 1)} name={name} twClasses="w-1/4" />
                 </>
             )
         } else {
-            return <TableHeader name={name} />
+            return <TableHeader key={name + index} name={name} />
         }
-    })
+    });
     
-    const tableData = data.body.map(row => {
+    const tableData = data ? data.body.map(row => {
         const columns = data.columns;
         const rowData = {
             ...row,
             columns
         }
       return <TableRow key={row.id} data={rowData} />;
-    });
+    }) : [];
   
     return (
-        <table className="min-h-0 w-full border shadow table-fixed whitespace-nowrap">
+        <table className="min-h-0 w-full shadow table-fixed whitespace-nowrap">
           <thead className="bg-slate-600 text-white">
             <tr>
               {tableColumns}

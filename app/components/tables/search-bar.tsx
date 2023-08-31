@@ -1,26 +1,26 @@
 'use client'
 
-import { useState } from "react";
-import { useSearchParams } from 'next/navigation';
+import Spinner from "../ui/spinner";
 
-export default function SearchBar() {
-    const searchParams = useSearchParams();
-    const searchhhh = searchParams.get('search');
-    console.log(searchhhh);
-    const [query, setQuery] = useState("");
+interface Props {
+    path: string;
+    value: string;
+    onChange: Function;
+    isLoading: boolean;
+}
 
-    async function search(formData: FormData, callback: Function) {
-        const response = await callback(formData);
-        return response;
-    }
+export default function SearchBar({ path, value, onChange, isLoading }: Props) {
     return (
         <form>
-            <input 
-                className="shadow-md border border-slate-400 w-full h-10 p-2 mb-2 rounded-none"
-                placeholder="Search..."
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                ></input>
+            <div className="flex px-2 items-center shadow-md border focus-within:border-2 bg-white border-slate-400 w-full h-10 mb-2 rounded-none">
+                <input 
+                    className="w-11/12 h-full px-2 focus:outline-none"
+                    value={value}
+                    onChange={e => onChange(e.target.value)}
+                    placeholder={`Search ${path}...`}
+                    ></input>
+                {isLoading && <Spinner></Spinner>}
+            </div>
         </form>
     )
 }

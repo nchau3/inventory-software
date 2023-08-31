@@ -1,5 +1,6 @@
 import ActiveBadge from "@/app/components/tables/active-badge";
 import { format } from 'date-fns';
+import TableData from "./table-data";
 
 export interface tableRowProps {
     id: number,
@@ -15,18 +16,19 @@ export default function TableRow({ data }: { data: tableRowProps }) {
     const rowData = data.columns.map(column => {
         // @ts-ignore
         const value = data[column];
-        if (column === "status") {
-            return <td><ActiveBadge is_active={data.is_active} /></td>;
-        } else if (value instanceof Date) {
-            return <td>{format(value, 'MM-dd-yyyy')}</td>
+        if (column === "qoh") {
+            return <TableData key={`${data.name}-${data.id}`} value={value}></TableData>
+        } else if (column === "status") {
+            return <TableData key={`${data.name}-${data.id}`} value={<ActiveBadge is_active={data.is_active}></ActiveBadge>} />
+        } else if (column === "last_modified") {
+            return <TableData key={`${data.name}-${data.id}`} value={format(new Date(value), 'MM-dd-yyyy')}></TableData>
         } else {
-            // @ts-ignore
-            return <td>{value}</td>;
+            return <TableData key={`${data.name}-${data.id}`} value={value}></TableData>
         }
     });
     return (
-        <tr className="even:bg-slate-200 odd:bg-slate-100">
-            <td className="text-center">
+        <tr className="even:bg-slate-100 odd:bg-white">
+            <td className="text-center py-1">
                 <input name={data.sku} type="checkbox" value="selected"></input>
             </td>
             {rowData}
