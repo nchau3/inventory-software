@@ -1,43 +1,39 @@
-import { prisma } from "../../prisma/client";
-import { Item } from "@prisma/client";
-import Table from "../components/tables/table";
+'use client'
 
-export interface itemWithTotalQuantity extends Item {
-  qoh: number;
-}
+import Table from "../components/tables/table";
+import SearchBar from "../components/tables/search-bar";
+import { useCallback, useEffect, useState } from 'react';
 
 const columns = ["name", "sku", "qoh", "status", "last_modified"];
 
-const getItems = async () => {
-  const itemsData = await prisma.item.findMany({
-    select: {
-      id: true,
-      name: true,
-      sku: true,
-      date_created: true,
-      last_modified: true,
-      is_active: true,
-      locations: {
-        select: {
-          quantity: true
-        }
-      }
-    }
-  });
+export default function Items() {
+  const [items, setItems] = useState();
+  const [query, setQuery] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const searchHandler = useCallback(() => {
+    setIsLoading(true);
+    fetch(`http://localhost:3000/api/items/search?q=${query}`)
+    .then(res => res.json())
+    .then(data => {
+      setItems(data);
+      setIsLoading(false);
+    });
+  }, [query])
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      searchHandler();
+    }, 300)
+    
+    return () => clearTimeout(timer);
+  }, [searchHandler]);
 
 
-  return itemsData.map(item => {
-    const qoh = item.locations.reduce((prev, curr) => prev + curr.quantity, 0);
-    return {
-      ...item,
-      qoh,
-      columns
-    }
-  });
-};
-
-export default async function Items() {
-  const items = await getItems();
-
-  return <Table data={{body: items, columns: columns}} />;
+  return (
+    <>
+      <SearchBar path="items" value={query} onChange={setQuery} isLoading={isLoading}/>
+      {items && <Table data={{ body: items, columns }}></Table>}
+    </>
+  )
 }
