@@ -34,7 +34,7 @@ export default function Table({ data }: { data: tableProps }) {
     }) : [];
   
     return (
-        <table className="min-h-0 w-full shadow table-fixed whitespace-nowrap">
+        <table className="mb-2 min-h-0 w-full shadow table-fixed whitespace-nowrap">
           <thead className="bg-slate-600 text-white">
             <tr>
               {tableColumns}

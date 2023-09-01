@@ -5,12 +5,17 @@ const columns = ["name", "sku", "qoh", "status", "last_modified"];
 
 export async function GET(request: Request) {
     const url = new URL(request.url);
-    const query = url.searchParams.get("q")!;
+    const params = url.searchParams;
+    const query = params.get("query") || "";
+    const skip = Number(params.get("skip"));
+    const take = Number(params.get("take"));
 
     const getItems = async (query: string) => {
         let itemsData;
         if (query) {
             itemsData = await prisma.item.findMany({
+              skip: skip,
+              take: take,
               where: {
                 OR: [
                   {
@@ -40,6 +45,8 @@ export async function GET(request: Request) {
             });
         } else {
             itemsData = await prisma.item.findMany({
+                skip: skip,
+                take: take,
                 select: {
                   id: true,
                   name: true,
