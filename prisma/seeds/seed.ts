@@ -1,4 +1,4 @@
-import { prisma } from '../client';
+import { prisma } from "../client";
 import { seedItems } from "./items";
 import { seedLocations } from "./locations";
 

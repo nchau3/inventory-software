@@ -9,24 +9,26 @@ export async function GET(request: Request) {
     const query = params.get("query") || "";
     const skip = Number(params.get("skip"));
     const take = Number(params.get("take"));
-
+    const searchTerm = query.length > 3 ? "contains" : "startsWith";
+    
     const getItems = async (query: string) => {
-        let itemsData;
+      let itemsData;
+      let totalRecords = 0;
         if (query) {
             itemsData = await prisma.item.findMany({
               skip: skip,
               take: take,
               where: {
                 OR: [
-                  {
-                      name: {
-                          startsWith: query
-                      }
+                 {
+                    name: {
+                      [searchTerm]: query
+                    }
                   },
                   {
-                      sku: {
-                          contains: query
-                      }
+                    sku: {
+                      [searchTerm]: query
+                    }
                   }
                 ]
               },
@@ -41,8 +43,24 @@ export async function GET(request: Request) {
                     quantity: true
                   }
                 }
-              }
+              },
             });
+            totalRecords = await prisma.item.count({
+              where: {
+                OR: [
+                  {
+                      name: {
+                          contains: query
+                      }
+                  },
+                  {
+                      sku: {
+                          contains: query
+                      }
+                  }
+                ]
+              }
+            })
         } else {
             itemsData = await prisma.item.findMany({
                 skip: skip,
@@ -60,15 +78,20 @@ export async function GET(request: Request) {
                   }
                 }
               });
+              totalRecords = await prisma.item.count();
         }
       
+        if (!itemsData) {
+          return [{totalRecords}]
+        }
       
         return itemsData.map(item => {
           const qoh = item.locations.reduce((prev, curr) => prev + curr.quantity, 0);
           return {
             ...item,
             qoh,
-            columns
+            columns,
+            totalRecords
           }
         });
       };

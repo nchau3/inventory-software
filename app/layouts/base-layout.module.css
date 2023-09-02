@@ -1,16 +1,16 @@
 .layoutContainer {
   --top-bar-height: 60px;
   --sidebar-width: 225px;
-  @apply min-h-screen flex flex-col bg-gradient-to-tr from-slate-300;
+  @apply flex min-h-screen flex-col bg-gradient-to-tr from-slate-300;
 }
 
 .topBar {
   height: var(--top-bar-height);
-  @apply bg-slate-600 sticky top-0;
+  @apply sticky top-0 bg-slate-600;
 }
 
 .sidebarMain {
-  @apply flex transition-all duration-300 w-full;
+  @apply flex w-full transition-all duration-300;
 }
 
 .sidebarCollapsed {
@@ -21,11 +21,11 @@
 .sidebar {
   top: var(--top-bar-height);
   height: calc(100vh - var(--top-bar-height));
-  @apply w-[var(--sidebar-width)] bg-slate-400 bg-opacity-20 shrink-0 sticky;
+  @apply sticky w-[var(--sidebar-width)] shrink-0 bg-slate-400 bg-opacity-20;
 }
 
 .expandButton {
-  @apply bg-slate-800 text-white absolute left-[calc(100%+8px)] top-2 flex h-9 w-9 items-center justify-center text-3xl;
+  @apply absolute left-[calc(100%+8px)] top-2 flex h-9 w-9 items-center justify-center bg-slate-800 text-3xl text-white;
 }
 
 .main {

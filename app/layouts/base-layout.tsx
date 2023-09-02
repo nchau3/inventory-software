@@ -28,9 +28,7 @@ export default function BaseLayout({
           </button>
           {sidebarSlot}
         </div>
-        <div className={s.main}>
-            {children}
-        </div>
+        <div className={s.main}>{children}</div>
       </div>
     </div>
   );

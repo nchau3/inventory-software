@@ -1,4 +1,4 @@
-import LogoHeader from "./logo-header"
+import LogoHeader from "./logo-header";
 
 export default function TopNav() {
   return (

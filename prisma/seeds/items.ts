@@ -25,19 +25,19 @@ export async function seedItems(prisma: PrismaClient) {
       where: {
         itemId_locationId: {
           itemId: randomItem,
-          locationId: randomLocation
-        }
+          locationId: randomLocation,
+        },
       },
       update: {
         quantity: {
-          increment: randomQuantity
-        }
+          increment: randomQuantity,
+        },
       },
       create: {
-          itemId: randomItem,
-          locationId: randomLocation,
-          quantity: randomQuantity
-        },
-    })
+        itemId: randomItem,
+        locationId: randomLocation,
+        quantity: randomQuantity,
+      },
+    });
   }
 }

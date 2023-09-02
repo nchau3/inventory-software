@@ -13,23 +13,22 @@ const getLocations = async () => {
       last_modified: true,
       items: {
         select: {
-          item: true
-        }
-      }
-    }
+          item: true,
+        },
+      },
+    },
   });
 
-
-  return locationsData.map(location => {
+  return locationsData.map((location) => {
     return {
       ...location,
-      columns
-    }
+      columns,
+    };
   });
 };
 
 export default async function Locations() {
   const locations = await getLocations();
 
-  return <Table data={{body: locations, columns: columns}} />;
+  return <Table data={{ body: locations, columns: columns }} />;
 }
