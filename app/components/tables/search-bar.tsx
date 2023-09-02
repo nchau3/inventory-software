@@ -17,11 +17,11 @@ export default function SearchBar({ path }: Props) {
   useEffect(() => {
     if (value) {
       startTransition(() => {
-        if (pathName === `/${path}`) {
-          router.push(`${path}/search?q=${value}`);
-        } else {
-          router.push(`search?q=${value}`)
-        }
+        router.push(`?search=${value}`)
+      })
+    } else {
+      startTransition(() => {
+        router.push(pathName);
       })
     }
   }, [value])

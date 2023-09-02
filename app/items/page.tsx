@@ -1,9 +1,8 @@
 import { prisma } from "@/prisma/client";
-import Table from "../../components/tables/table";
-import SearchBar from "../../components/tables/search-bar";
+import Table from "../components/tables/table";
+import SearchBar from "../components/tables/search-bar";
 
 const columns = ["name", "sku", "qoh", "status", "last_modified"];
-const approvedSlugs = ['search'];
 
 export default async function Items({
     params,
@@ -12,15 +11,8 @@ export default async function Items({
     params: { slug: string[] }, 
     searchParams: { [key: string]: string | undefined}
 }) {
-  if (params.slug) {
-    const slugs = params.slug;
-    slugs.forEach(slug => {
-      if (!approvedSlugs.includes(slug)) {
-        throw new Error("Page not found.");
-      }
-    });
-  }
-  const query = searchParams.q || "";
+
+  const query = searchParams.search || "";
   const skip = Number(searchParams.skip) || 0;
   const take = 50;
   const searchTerm = query.length > 3 ? "contains" : "startsWith";
@@ -28,7 +20,7 @@ export default async function Items({
   const getItems = async (query: string) => {
     let itemsData;
     let totalRecords = 0;
-      if (query && params.slug[0] === "search") {
+      if (query) {
           itemsData = await prisma.item.findMany({
             skip: skip,
             take: take,
