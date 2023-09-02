@@ -19,7 +19,7 @@ export default function Items() {
   const searchHandler = useCallback(() => {
     setIsFetching(true);
     fetch(
-      `http://localhost:3000/api/items/search?query=${query}&skip=${skip}&take=${take}`,
+      `/api/items/search?query=${query}&skip=${skip}&take=${take}`,
     )
       .then((res) => res.json())
       .then((data) => {
