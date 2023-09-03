@@ -15,9 +15,9 @@ export default async function Items({
   const query = searchParams.search || "";
   const skip = Number(searchParams.skip) || 0;
   const take = 50;
-  const searchTerm = query.length > 3 ? "contains" : "startsWith";
   
   const getItems = async (query: string) => {
+    const searchTerm = query.length > 3 ? "contains" : "startsWith";
     let itemsData;
     let totalRecords = 0;
       if (query) {
@@ -50,18 +50,25 @@ export default async function Items({
                 }
               }
             },
+            orderBy: {
+              _relevance: {
+                fields: ['name', 'sku'],
+                search: query,
+                sort: 'desc'
+              }
+            }
           });
           totalRecords = await prisma.item.count({
             where: {
               OR: [
                 {
                     name: {
-                        contains: query
+                        [searchTerm]: query
                     }
                 },
                 {
                     sku: {
-                        contains: query
+                        [searchTerm]: query
                     }
                 }
               ]
@@ -82,6 +89,9 @@ export default async function Items({
                     quantity: true
                   }
                 }
+              },
+              orderBy: {
+                last_modified: 'desc'
               }
             });
       }
@@ -92,6 +102,7 @@ export default async function Items({
           ...item,
           qoh,
           columns,
+          totalRecords
         }
       });
     };
