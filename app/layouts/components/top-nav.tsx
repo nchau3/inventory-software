@@ -6,10 +6,11 @@ export default function TopNav() {
     <header className="flex items-center justify-between p-2">
       <LogoHeader />
       <span>
-        <label htmlFor="temp" className="mr-2">
+        <label htmlFor="placeholderForm" className="mr-2">
           INPUT:
         </label>
         <input
+          id="placeholderForm"
           name="temp"
           placeholder="This does nothing."
           className="h-6"
