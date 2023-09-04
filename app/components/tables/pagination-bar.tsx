@@ -1,11 +1,12 @@
 "use client";
 
-interface Props {
+interface paginationBarProps {
   currentPage: number;
-  clickHandler: Function;
   lastPage: boolean;
-  isLoading: boolean;
+  recordsDisplayed: number;
   totalRecords: number;
+  isLoading: boolean;
+  onClick: Function;
 }
 
 function PaginationButton({
@@ -21,7 +22,7 @@ function PaginationButton({
 }) {
   return (
     <button
-      className={`h-6 w-6 border border-slate-300 bg-white enabled:hover:bg-slate-300 ${
+      className={`h-6 w-6 border border-slate-300 bg-white enabled:hover:bg-slate-200 ${
         hidden ? "invisible" : ""
       }`}
       onClick={() => onClick(direction)}
@@ -32,20 +33,22 @@ function PaginationButton({
   );
 }
 
-export default function PaginationBar({
-  currentPage,
-  clickHandler,
-  lastPage,
-  isLoading,
-  totalRecords,
-}: Props) {
-  console.log(totalRecords);
+export default function PaginationBar({ currentPage, lastPage, recordsDisplayed, totalRecords, isLoading, onClick }: paginationBarProps) {
+  const changePage = (direction: "next" | "prev") => {
+    const increment = direction === "next" ? 1 : -1;
+    onClick(currentPage + increment);
+  }
+
+  //take is hard-coded at 50
+  const start = currentPage === 1 ? 1 : ((currentPage - 1) * 50) + 1;
+  const end = recordsDisplayed < 50 ? start -1 + recordsDisplayed : currentPage * 50;
+
   return (
-    <span className="flex w-full items-center justify-around">
-      <div className="flex w-[6rem] items-center justify-between">
+    <span className="flex w-full items-center justify-end">
+      <div className="flex w-[6rem] items-center justify-between mr-2">
         <PaginationButton
           direction={"prev"}
-          onClick={clickHandler}
+          onClick={changePage}
           hidden={currentPage === 1}
           disabled={isLoading}
         ></PaginationButton>
@@ -54,11 +57,12 @@ export default function PaginationBar({
         </div>
         <PaginationButton
           direction={"next"}
-          onClick={clickHandler}
+          onClick={changePage}
           hidden={lastPage}
           disabled={isLoading}
         ></PaginationButton>
       </div>
+      <div className="text-sm min-w-[8rem] text-end">{`${start} - ${end} of ${totalRecords}`}</div>
     </span>
   );
 }
