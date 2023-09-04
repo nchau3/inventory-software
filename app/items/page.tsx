@@ -1,6 +1,8 @@
 import { prisma } from "@/prisma/client";
 import Table from "../components/tables/table";
 import SearchBar from "../components/tables/search-bar";
+import PaginationBar from "../components/tables/pagination-bar";
+import TableClient from "../components/tables/table-client";
 
 const columns = ["name", "sku", "qoh", "status", "last_modified"];
 
@@ -13,8 +15,11 @@ export default async function Items({
 }) {
 
   const query = searchParams.search || "";
-  const skip = Number(searchParams.skip) || 0;
+  const currentPage = Number(searchParams.page) || 1;
   const take = 50;
+  const skip = searchParams.page  && searchParams.page !== "1" ? ((Number(searchParams.page) - 1) * take) : 0;
+
+  const urlPath = `/items?search=${query}`;
   
   const getItems = async (query: string) => {
     const searchTerm = query.length > 3 ? "contains" : "startsWith";
@@ -94,24 +99,34 @@ export default async function Items({
                 last_modified: 'desc'
               }
             });
+          
+          totalRecords = await prisma.item.count();
       }
     
-      return itemsData.map(item => {
+      const items = itemsData.map(item => {
         const qoh = item.locations.reduce((prev, curr) => prev + curr.quantity, 0);
         return {
           ...item,
           qoh,
-          columns,
-          totalRecords
+          columns
         }
       });
+
+      return { items, totalRecords };
     };
 
-  const items = await getItems(query);
+  const { items, totalRecords } = await getItems(query);
+  const lastPage = items.length < take;
 
   return (
     <div className="max-w-[1200px]">
-      <SearchBar path="items"></SearchBar>
+      <TableClient searchProps={{path: "items"}} filterProps={{
+        currentPath: urlPath,
+        currentPage: currentPage,
+        lastPage: lastPage,
+        recordsDisplayed: items.length,
+        totalRecords: totalRecords
+      }}></TableClient>
       <Table data={{ body: items, columns }}></Table>
     </div>
   );
