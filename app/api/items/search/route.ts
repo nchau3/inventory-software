@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 const columns = ["name", "sku", "qoh", "status", "last_modified"];
 
 const getItems = async (query: string, skip: number, take: number) => {
-  const searchTerm = query.length > 4 ? "contains" : "startsWith";
+  const searchTerm = query.length > 3 ? "contains" : "startsWith";
   let itemsData;
   let totalRecords = 0;
     if (query) {
@@ -13,22 +13,14 @@ const getItems = async (query: string, skip: number, take: number) => {
           take: take,
           where: {
             OR: [
-              {
+             {
                 name: {
-                  [searchTerm]: query,
-                  mode: 'insensitive'
-                }
-              },
-              {
-                name: {
-                  equals: query,
-                  mode: 'insensitive'
+                  [searchTerm]: query
                 }
               },
               {
                 sku: {
-                  [searchTerm]: query,
-                  mode: 'insensitive'
+                  [searchTerm]: query
                 }
               }
             ]
@@ -45,6 +37,13 @@ const getItems = async (query: string, skip: number, take: number) => {
               }
             }
           },
+          orderBy: {
+            _relevance: {
+              fields: ['name', 'sku'],
+              search: query,
+              sort: 'desc'
+            }
+          }
         });
         totalRecords = await prisma.item.count({
           where: {
@@ -77,32 +76,33 @@ const getItems = async (query: string, skip: number, take: number) => {
                   quantity: true
                 }
               }
+            },
+            orderBy: {
+              last_modified: 'desc'
             }
           });
-          totalRecords = await prisma.item.count();
+        
+        totalRecords = await prisma.item.count();
     }
   
-    if (!itemsData) {
-      return [{totalRecords}]
-    }
-  
-    return itemsData.map(item => {
+    const items = itemsData.map(item => {
       const qoh = item.locations.reduce((prev, curr) => prev + curr.quantity, 0);
       return {
         ...item,
         qoh,
-        columns,
-        totalRecords
+        columns
       }
     });
+
+    return { items, totalRecords, columns };
   };
 
 export async function GET(request: Request) {
     const url = new URL(request.url);
-    const params = url.searchParams;
-    const query = params.get("query") || "";
-    const skip = Number(params.get("skip"));
-    const take = Number(params.get("take"));
+    const searchParams = url.searchParams;
+    const query = searchParams.get("query") || "";
+    const skip = Number(searchParams.get("skip"));
+    const take = Number(searchParams.get("take"));
 
 
     const data = await getItems(query, skip, take);
