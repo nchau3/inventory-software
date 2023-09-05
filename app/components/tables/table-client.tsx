@@ -29,22 +29,23 @@ export default function TableClient({ searchProps, filterProps }: { searchProps:
     const [isPending, startTransition] = useTransition();
 
     useEffect(() => {
-        const pageString = page ? `&page=${page}` : "";
+        const resetPage = searchQuery !== query ? 1 : page;
+        const pageString = page ? `&page=${resetPage}` : "";
         if (searchQuery || page !== currentPage) {
           startTransition(() => {
-            router.push(`?search=${searchQuery}${pageString}`)
+            router.replace(`?search=${searchQuery}${pageString}`)
           })
         } else {
           startTransition(() => {
-            router.push(pathName);
+            router.replace(pathName);
           })
         }
       }, [searchQuery, page]);
 
     return (
         <>
-            <SearchBar path={searchProps.path} value={searchQuery} onChange={setSearchQuery} isLoading={isPending}></SearchBar>
-            <PaginationBar onClick={setPage} currentPage={page} lastPage={lastPage} recordsDisplayed={recordsDisplayed} totalRecords={totalRecords} isLoading={isPending}></PaginationBar>
+            <SearchBar key="searchBar" path={searchProps.path} value={searchQuery} onChange={setSearchQuery} isLoading={isPending}></SearchBar>
+            <PaginationBar onClick={setPage} currentPage={currentPage} lastPage={lastPage} recordsDisplayed={recordsDisplayed} totalRecords={totalRecords} isLoading={isPending}></PaginationBar>
         </>
     )
 }
