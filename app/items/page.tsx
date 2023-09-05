@@ -33,14 +33,16 @@ export default async function Items({
               OR: [
                {
                   name: {
-                    [searchTerm]: query
+                    [searchTerm]: query,
+                    mode: 'insensitive'
                   }
                 },
                 {
                   sku: {
-                    [searchTerm]: query
+                    [searchTerm]: query,
+                    mode: 'insensitive'
                   }
-                }
+                },
               ]
             },
             select: {
@@ -67,15 +69,17 @@ export default async function Items({
             where: {
               OR: [
                 {
-                    name: {
-                        [searchTerm]: query
-                    }
+                  name: {
+                    [searchTerm]: query,
+                    mode: 'insensitive'
+                  }
                 },
                 {
-                    sku: {
-                        [searchTerm]: query
-                    }
-                }
+                  sku: {
+                    [searchTerm]: query,
+                    mode: 'insensitive'
+                  }
+                },
               ]
             }
           })
@@ -121,7 +125,6 @@ export default async function Items({
   return (
     <div className="max-w-[1200px]">
       <TableClient searchProps={{path: "items"}} filterProps={{
-        currentPath: urlPath,
         currentPage: currentPage,
         lastPage: lastPage,
         recordsDisplayed: items.length,
