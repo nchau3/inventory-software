@@ -2,11 +2,10 @@
 
 interface paginationBarProps {
   currentPage: number;
-  lastPage: boolean;
+  onClick: Function;
   recordsDisplayed: number;
   totalRecords: number;
   isLoading: boolean;
-  onClick: Function;
 }
 
 function PaginationButton({
@@ -33,7 +32,7 @@ function PaginationButton({
   );
 }
 
-export default function PaginationBar({ currentPage, lastPage, recordsDisplayed, totalRecords, isLoading, onClick }: paginationBarProps) {
+export default function PaginationBar({ currentPage, onClick, recordsDisplayed, totalRecords, isLoading }: paginationBarProps) {
   const changePage = (direction: "next" | "prev") => {
     const increment = direction === "next" ? 1 : -1;
     onClick(currentPage + increment);
@@ -42,6 +41,8 @@ export default function PaginationBar({ currentPage, lastPage, recordsDisplayed,
   //take is hard-coded at 50
   const start = currentPage === 1 ? 1 : ((currentPage - 1) * 50) + 1;
   const end = recordsDisplayed < 50 ? start -1 + recordsDisplayed : currentPage * 50;
+
+  const lastPage = currentPage * 50 > totalRecords;
 
   return (
     <span className="flex w-full items-center justify-end">
