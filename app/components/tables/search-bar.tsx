@@ -18,7 +18,6 @@ export default function SearchBar({ path, value, onChange, isLoading}: Props) {
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={`Search ${path}...`}
-          autoFocus
         ></input>
         {isLoading && (
           <div className="ml-auto h-6 w-6">
