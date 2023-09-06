@@ -94,13 +94,13 @@ const getItems = async (query: string, skip: number, take: number) => {
       }
     });
 
-    return { items, totalRecords, columns };
+    return { items, columns, totalRecords };
   };
 
 export async function GET(request: Request) {
     const url = new URL(request.url);
     const searchParams = url.searchParams;
-    const query = searchParams.get("query") || "";
+    const query = searchParams.get("q") || "";
     const skip = Number(searchParams.get("skip"));
     const take = Number(searchParams.get("take"));
 
