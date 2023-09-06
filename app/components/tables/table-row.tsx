@@ -18,25 +18,25 @@ export default function TableRow({ data }: { data: Props }) {
     const value = data[column];
     if (column === "qoh") {
       return (
-        <TableData key={`${data.name}-${data.id}`} value={value}></TableData>
+        <TableData key={`${data.id}-${column}`} value={value}></TableData>
       );
     } else if (column === "status") {
       return (
         <TableData
-          key={`${data.name}-${data.id}`}
+          key={`${data.id}-${column}`}
           value={<ActiveBadge is_active={data.is_active}></ActiveBadge>}
         />
       );
     } else if (column === "last_modified") {
       return (
         <TableData
-          key={`${data.name}-${data.id}`}
+          key={`${data.id}-${column}`}
           value={format(new Date(value), "MM-dd-yyyy")}
         ></TableData>
       );
     } else {
       return (
-        <TableData key={`${data.name}-${data.id}`} value={value}></TableData>
+        <TableData key={`${data.id}-${column}`} value={value}></TableData>
       );
     }
   });
