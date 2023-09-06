@@ -29,5 +29,5 @@
 }
 
 .main {
-  @apply flex-grow flex-col items-center justify-center px-10 py-4;
+  @apply flex flex-grow flex-col items-center py-4;
 }
