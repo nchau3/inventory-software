@@ -1,135 +1,56 @@
-import { prisma } from "@/prisma/client";
+'use client'
+
 import Table from "../components/tables/table";
 import SearchBar from "../components/tables/search-bar";
 import PaginationBar from "../components/tables/pagination-bar";
-import TableClient from "../components/tables/table-client";
+import { useEffect, useState, useTransition } from "react";
 
-const columns = ["name", "sku", "qoh", "status", "last_modified"];
+interface itemsResponse {
+  items: [];
+  columns: [];
+  lastPage: boolean;
+  totalRecords: number;
+}
 
-export default async function Items({
-    params,
-    searchParams
-  }: { 
-    params: { slug: string[] }, 
-    searchParams: { [key: string]: string | undefined}
-}) {
-
-  const query = searchParams.search || "";
-  const currentPage = Number(searchParams.page) || 1;
+export default function Items() {
+  const [itemsData, setItemsData] = useState<itemsResponse>({
+    items: [],
+    columns: [],
+    lastPage: false,
+    totalRecords: 0
+  });
+  const [isPending, startTransition] = useTransition();
+  const [query, setQuery] = useState("");
+  const [page, setPage] = useState(1);
   const take = 50;
-  const skip = searchParams.page  && searchParams.page !== "1" ? ((Number(searchParams.page) - 1) * take) : 0;
+  const skip = page === 1 ? 0 : (page - 1) * take;
 
-  const urlPath = `/items?search=${query}`;
-  
-  const getItems = async (query: string) => {
-    const searchTerm = query.length > 3 ? "contains" : "startsWith";
-    let itemsData;
-    let totalRecords = 0;
-      if (query) {
-          itemsData = await prisma.item.findMany({
-            skip: skip,
-            take: take,
-            where: {
-              OR: [
-               {
-                  name: {
-                    [searchTerm]: query,
-                    mode: 'insensitive'
-                  }
-                },
-                {
-                  sku: {
-                    [searchTerm]: query,
-                    mode: 'insensitive'
-                  }
-                },
-              ]
-            },
-            select: {
-              id: true,
-              name: true,
-              sku: true,
-              last_modified: true,
-              is_active: true,
-              locations: {
-                select: {
-                  quantity: true
-                }
-              }
-            },
-            orderBy: {
-              _relevance: {
-                fields: ['name', 'sku'],
-                search: query,
-                sort: 'desc'
-              }
-            }
-          });
-          totalRecords = await prisma.item.count({
-            where: {
-              OR: [
-                {
-                  name: {
-                    [searchTerm]: query,
-                    mode: 'insensitive'
-                  }
-                },
-                {
-                  sku: {
-                    [searchTerm]: query,
-                    mode: 'insensitive'
-                  }
-                },
-              ]
-            }
-          })
-      } else {
-          itemsData = await prisma.item.findMany({
-              skip: skip,
-              take: take,
-              select: {
-                id: true,
-                name: true,
-                sku: true,
-                last_modified: true,
-                is_active: true,
-                locations: {
-                  select: {
-                    quantity: true
-                  }
-                }
-              },
-              orderBy: {
-                last_modified: 'desc'
-              }
-            });
-          
-          totalRecords = await prisma.item.count();
-      }
-    
-      const items = itemsData.map(item => {
-        const qoh = item.locations.reduce((prev, curr) => prev + curr.quantity, 0);
-        return {
-          ...item,
-          qoh,
-          columns
-        }
-      });
+  const fetchItems = async () => {
+    const res = await fetch(`api/items/search?q=${query}&page=${page}&skip=${skip}&take=${take}`)
+    const data = await res.json();
+    startTransition(() => {
+      setItemsData(data);
+    })
+  }
 
-      return { items, totalRecords };
-    };
+  //page 1 on query change
+  useEffect(() => {
+    setPage(1);
+    fetchItems();
+    return;    
+  }, [query]);
 
-  const { items, totalRecords } = await getItems(query);
-  const lastPage = items.length < take;
+  useEffect(() => {
+    fetchItems();
+    return;
+  }, [page]);
+
+  const { items, columns, totalRecords } = itemsData;
 
   return (
-    <div className="max-w-[1200px]">
-      <TableClient searchProps={{path: "items"}} filterProps={{
-        currentPage: currentPage,
-        lastPage: lastPage,
-        recordsDisplayed: items.length,
-        totalRecords: totalRecords
-      }}></TableClient>
+    <div className="px-10 max-w-[1200px]">
+      <SearchBar path="items" value={query} onChange={setQuery} isLoading={isPending}></SearchBar>
+      <PaginationBar currentPage={page} onClick={setPage} totalRecords={totalRecords} recordsDisplayed={items.length} isLoading={isPending}></PaginationBar>
       <Table data={{ body: items, columns }}></Table>
     </div>
   );
