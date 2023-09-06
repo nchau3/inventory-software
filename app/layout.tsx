@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
 import { Quicksand } from "next/font/google";
 
-//styles
-import "../styles/globals.css";
+//layout components
 import SideNav from "./layouts/components/sidenav";
 import BaseLayout from "./layouts/base-layout";
 import TopNav from "./layouts/components/top-nav";
+
+//styles
+import "../styles/globals.css";
+import RecoilContextProvider from "./recoilContextProvider";
 
 const globalFont = Quicksand({ subsets: ["latin"], weight: "400" });
 
@@ -23,7 +26,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={globalFont.className}>
         <BaseLayout topNavSlot={<TopNav />} sideNavSlot={<SideNav />}>
-          {children}
+          <RecoilContextProvider>
+            {children}
+          </RecoilContextProvider>
         </BaseLayout>
       </body>
     </html>
