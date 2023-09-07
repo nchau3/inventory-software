@@ -1,5 +1,5 @@
 import ActiveBadge from "@/app/components/tables/active-badge";
-import { format } from "date-fns";
+import { format, formatRelative } from "date-fns";
 import TableData from "./table-data";
 import Link from "next/link";
 
@@ -20,7 +20,7 @@ export default function TableRow({ data }: { data: Props }) {
     const value = data[column];
     if (column === "name") {
       return (
-        <Link href={`/${data.path}/${data.id}`} className="hover:text-slate-400 text-xl">
+        <Link href={`/${data.path}/${data.id}`} className="hover:text-slate-400 md:text-lg">
           <TableData key={`${data.id}-${column}`} value={value}></TableData>
         </Link>
       )
@@ -40,7 +40,7 @@ export default function TableRow({ data }: { data: Props }) {
       return (
         <TableData
           key={`${data.id}-${column}`}
-          value={format(new Date(value), "MM-dd-yyyy")}
+          value={formatRelative(new Date(value), new Date())}
         ></TableData>
       );
     } else {
