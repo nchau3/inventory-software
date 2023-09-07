@@ -15,12 +15,14 @@ const getItems = async (query: string, skip: number, take: number) => {
             OR: [
              {
                 name: {
-                  [searchTerm]: query
+                  [searchTerm]: query,
+                  mode: 'insensitive'
                 }
               },
               {
                 sku: {
-                  [searchTerm]: query
+                  [searchTerm]: query,
+                  mode: 'insensitive'
                 }
               }
             ]
@@ -50,12 +52,14 @@ const getItems = async (query: string, skip: number, take: number) => {
             OR: [
               {
                   name: {
-                      [searchTerm]: query
+                      [searchTerm]: query,
+                      mode: 'insensitive'
                   }
               },
               {
                   sku: {
-                      [searchTerm]: query
+                      [searchTerm]: query,
+                      mode: 'insensitive'
                   }
               }
             ]
