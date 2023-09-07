@@ -2,15 +2,16 @@ import TableHeader from "./table-header";
 import TableRow, { Props } from "./table-row";
 
 interface tableProps {
+  path: string;
   body: Props[];
   columns: string[];
 }
 
-export default function Table({ data }: { data: tableProps }) {
+export default function Table({ body, path, columns }: tableProps) {
   const formatColumnName = (colName: string) => {
     return colName.replace("_", " ").toUpperCase();
   };
-  const tableColumns = data.columns.map((column, index) => {
+  const tableColumns = columns.map((column, index) => {
     const name = formatColumnName(column);
     if (index === 0) {
       return (
@@ -24,12 +25,12 @@ export default function Table({ data }: { data: tableProps }) {
     }
   });
 
-  const tableData = data
-    ? data.body.map((row) => {
-        const columns = data.columns;
+  const tableData = body
+    ? body.map((row) => {
         const rowData = {
           ...row,
           columns,
+          path
         };
         return <TableRow key={row.id} data={rowData} />;
       })
