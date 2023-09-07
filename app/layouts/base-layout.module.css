@@ -1,7 +1,7 @@
 .layoutContainer {
   --top-bar-height: 60px;
   --sidebar-width: 225px;
-  @apply flex min-h-screen flex-col bg-gradient-to-tr from-slate-300;
+  @apply flex min-h-screen flex-col bg-gradient-to-tr md:from-slate-200 lg:from-slate-300;
 }
 
 .topBar {
