@@ -59,22 +59,13 @@ export default async function ItemDetails({ params }: { params: { id: string }})
 
         for (let entry of entries) {
             if (entry[1]) {
-                if (entry[0] === 'name') {
+                if (entry[0] === 'name' || entry[0] === 'sku') {
                     await prisma.item.update({
                         where: {
                             id: id
                         },
                         data: {
-                            name: entry[1].toString()
-                        }
-                    })
-                } else if (entry[0] === 'sku') {
-                    await prisma.item.update({
-                        where: {
-                            id: id
-                        },
-                        data: {
-                            sku: entry[1].toString()
+                            [entry[0]]: entry[1].toString()
                         }
                     })
                 } else {
