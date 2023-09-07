@@ -51,7 +51,7 @@ export default function Items() {
     <div className="px-10 max-w-[1200px]">
       <SearchBar path="items" value={query} onChange={setQuery} isLoading={isPending}></SearchBar>
       <PaginationBar currentPage={page} onClick={setPage} totalRecords={totalRecords} recordsDisplayed={items.length} isLoading={isPending}></PaginationBar>
-      <Table data={{ body: items, columns }}></Table>
+      <Table body={items} path="items" columns={columns} ></Table>
     </div>
   );
 }
