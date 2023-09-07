@@ -6,5 +6,5 @@ interface Props {
 }
 
 export default function TableData({ value, twClasses }: Props) {
-  return <td className={`text-start p-1 ${twClasses}`}>{value}</td>;
+  return <td className={`text-start p-1 overflow-hidden text-ellipsis ${twClasses}`}>{value}</td>;
 }
