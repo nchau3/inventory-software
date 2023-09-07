@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Quicksand } from "next/font/google";
+import RecoilContextProvider from "./recoilContextProvider";
 
 //layout components
 import SideNav from "./layouts/components/sidenav";
@@ -8,7 +9,6 @@ import TopNav from "./layouts/components/top-nav";
 
 //styles
 import "../styles/globals.css";
-import RecoilContextProvider from "./recoilContextProvider";
 
 const globalFont = Quicksand({ subsets: ["latin"], weight: "400" });
 
