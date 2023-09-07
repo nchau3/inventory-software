@@ -27,6 +27,10 @@ export default function Items() {
 
   const fetchItems = async () => {
     const res = await fetch(`api/items/search?q=${query}&page=${page}&skip=${skip}&take=${take}`)
+    if (!res.ok) {
+      console.log(res.statusText);
+      throw new Error(res.statusText)
+    }
     const data = await res.json();
     startTransition(() => {
       setItemsData(data);
